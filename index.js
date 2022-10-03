@@ -1,7 +1,5 @@
 
-
 var a = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]];
-
 var ab = [[".",".",".","1","8",".",".",".","7"],
         [".",".",".",".",".",".","2",".","."],
         [".",".",".",".",".",".",".",".","3"],
@@ -11,8 +9,7 @@ var ab = [[".",".",".","1","8",".",".",".","7"],
         ["1",".",".",".","5",".",".",".","."],
         [".",".",".",".",".",".",".",".","."],
         [".",".",".","5",".",".",".",".","6"]];
-function helping(){
-    
+function helping(){   
 }
 function createBoxes(){
     var b = document.getElementById("box");
@@ -85,6 +82,19 @@ function getVal(){
         ar=[];
     }
     return ab;
+}
+const fillVal = (x) =>{
+    var boxes  = document.getElementsByClassName('boxx');
+    // alert(boxes[9].value);
+    for(var i =0;i<9;i++){
+        for(var j =0;j<9;j++){
+            // console.log("Inserted lol " + boxes[(9*i)+j].value);
+            if(boxes[(9*i)+j].value == ''){
+                boxes[(9*i)+j].value = x[i][j];
+                // console.log("Inserted " + a[i][j]);
+            }
+        }
+    }
 }
 function isValid(a){
     
@@ -187,5 +197,61 @@ function sub(){
     }
     return 0;
 }
+
+const sol = () =>{
+    var x = solve(a);
+    // var x = [[5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],[8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6],[9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]];
+    fillVal(x);
+
+}
+const reset = ()=>{
+    var a = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]];
+    var boxes  = document.getElementsByClassName('boxx');
+    for(var i =0;i<9;i++){
+        for(var j =0;j<9;j++){
+            // console.log(a[i][j]);
+            if(a[i][j] == '.')
+                boxes[(9*i) + j ].value = "";
+            else boxes[(9*i) + j ].value = a[i][j];
+        }
+    }
+
+}
+const solve = (a,i=0,j=0)=>{
+    var newj = 0;
+    var newi = 0;
+    while(a[i+newi][j+newj] != '.')
+    {   if (i+newi == 8 && j+newj ==8) break;
+        if (j+newj <8)
+            newj += 1
+        else 
+        {
+            j = 0
+            newj = 0
+            newi += 1
+        }
+    }
+    var newa;
+    var rt;
+    for(var iter=1;iter<=9;iter++){
+        
+        newa = a;
+        newa[i+newi][j+newj] = iter;
+        
+        if (isValid(newa)){
+            if (i+newi == 8 && j+newj ==8)
+            {
+                return newa;
+            }
+            rt = solve(newa,i+newi,j+newj);
+            if(rt == 0) continue;
+            else return newa  
+        }
+    }
+    newa[i+newi][j+newj] = '.';
+    return 0;
+
+}
 createBoxes();
+
 
